@@ -1,16 +1,11 @@
 import type { FC } from 'react'
 import { useState, useEffect, useRef } from 'react'
-import AudioAnalyzer from '../lib/audio'
 import VisRenderer from '../vis/vis'
 import '../style/vis.css'
 
 const TEXTURE_SIZE = 2048
 
-type VisProps = {
-    audio: AudioAnalyzer
-}
-
-const Vis: FC<VisProps> = ({ audio }) => {
+const Vis: FC = () => {
     const [width, setWidth] = useState<number>(0)
     const [height, setHeight] = useState<number>(0)
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -36,14 +31,8 @@ const Vis: FC<VisProps> = ({ audio }) => {
         if (!canvasRef.current) {
             throw new Error('could not get reference to canvas')
         }
-        visRef.current = new VisRenderer(
-            canvasRef.current,
-            TEXTURE_SIZE,
-            audio
-        )
-        // will reinitialize vis renderer every time audio changes
-        // highly unneccesary but fine for now
-    }, [audio])
+        visRef.current = new VisRenderer(canvasRef.current, TEXTURE_SIZE)
+    }, [])
 
     useEffect(() => {
         // update projection matrices on canvas resize
