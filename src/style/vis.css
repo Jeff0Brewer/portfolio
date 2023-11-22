@@ -1,0 +1,7 @@
+.vis-canvas {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+}

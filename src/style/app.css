@@ -1,0 +1,22 @@
+.app {
+    position: absolute;
+    inset: 0;
+}
+
+.playPause {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+
+    min-width: 60px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #000;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #f0f;
+}
+
+.playPause:hover {
+    color: rgba(255, 255, 255, 0.6);
+}
