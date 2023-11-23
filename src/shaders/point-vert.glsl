@@ -5,7 +5,6 @@ uniform mat4 proj;
 uniform float texSize;
 uniform float dpr;
 uniform sampler2D positions;
-uniform sampler2D frequencies;
 
 varying vec3 color;
 varying vec3 position;
@@ -49,9 +48,7 @@ void main() {
     gl_Position = proj * view * vec4(position, 1.0);
 
     float normInd = vertexInd / (texSize * texSize / 3.0);
-    float mirroredInd = pow(abs(normInd - 0.5) * 2.0, 1.2);
-    float freq = texture2D(frequencies, vec2(mirroredInd, 0.5)).x;
-    color = colorMap(normInd) * shadeMap(freq);
+    color = colorMap(normInd);
 
-    gl_PointSize = (30.0 * pow(freq, 5.0) + 5.0)* dpr / gl_Position.w;
+    gl_PointSize = 5.0 * dpr / gl_Position.w;
 }

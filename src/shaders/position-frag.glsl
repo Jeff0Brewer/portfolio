@@ -1,8 +1,7 @@
 precision highp float;
 
 uniform float texSize;
-uniform sampler2D tex0; // frequencies
-uniform sampler2D tex1; // last positions
+uniform sampler2D positions;
 
 const float EPSILON = 0.01;
 
@@ -43,17 +42,13 @@ void main() {
     float normInd = 3.0 * ind / (texSize * texSize);
 
     vec2 lastPosCoord = indToCoord(ind);
-    vec4 lastPosEncoded = texture2D(tex1, lastPosCoord);
+    vec4 lastPosEncoded = texture2D(positions, lastPosCoord);
     float lastPos = decodeFloat(lastPosEncoded);
 
     if (modInd < EPSILON) {
         gl_FragColor = encodeFloat(lastPos);
     } else if (modInd < 1.0 + EPSILON) {
-        float mirroredInd = pow(abs(normInd - 0.5) * 2.0, 1.2);
-        float freq = texture2D(tex0, vec2(mirroredInd, 0.5)).x;
-        float lastShifted = mod(lastPos + pow(freq, 2.0) * 0.015, 1.0);
-        float yPosition = lastShifted * 0.99 + min(freq, 0.5) * 0.01;
-        gl_FragColor = encodeFloat(yPosition);
+        gl_FragColor = encodeFloat(lastPos);
     } else {
         gl_FragColor = encodeFloat(lastPos);
     }
