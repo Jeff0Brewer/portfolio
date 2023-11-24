@@ -42,7 +42,7 @@ void main() {
     vec4 zPixel = texture2D(positions, indToCoord(ind * PX_PER_POS + 2.0));
     position = vec3(
         decodeFloat(xPixel),
-        decodeFloat(yPixel) * 6.0 - 5.0,
+        decodeFloat(yPixel) * 6.0 - 5.5,
         decodeFloat(zPixel)
     );
     gl_Position = proj * view * vec4(position, 1.0);
@@ -50,5 +50,5 @@ void main() {
     float normInd = vertexInd / (texSize * texSize / 3.0);
     color = colorMap(normInd);
 
-    gl_PointSize = 5.0 * dpr / gl_Position.w;
+    gl_PointSize = 2.0 * dpr / gl_Position.w;
 }

@@ -48,7 +48,8 @@ void main() {
     if (modInd < EPSILON) {
         gl_FragColor = encodeFloat(lastPos);
     } else if (modInd < 1.0 + EPSILON) {
-        gl_FragColor = encodeFloat(lastPos);
+        float pos = mod(lastPos + 0.001 * sin(pow(lastPos, 2.0) * 100.0) + 0.0011, 1.0);
+        gl_FragColor = encodeFloat(pos);
     } else {
         gl_FragColor = encodeFloat(lastPos);
     }

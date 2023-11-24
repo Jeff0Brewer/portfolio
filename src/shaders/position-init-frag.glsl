@@ -2,9 +2,11 @@ precision highp float;
 
 uniform float texSize;
 
-const float EPSILON = 0.01;
-const float NUM_ROTATE = 6.0;
 const float PI = 3.14159;
+const float EPSILON = 0.01;
+
+const float NUM_ROTATE = 20.0;
+const float Y_MOD = 0.003;
 
 // encodes float values in range (0, 1) to rgba bytes
 const vec4 bitEncode = vec4(1.0, 255.0, 65025.0, 16581375.0);
@@ -24,7 +26,7 @@ void main() {
     float noise = sin(ind * 0.01) + sin(ind * 0.001);
     float angle =
         ind / maxInd * NUM_ROTATE * PI * 2.0 +
-        noise * 0.1 -
+        noise * 0.2 -
         PI * 0.5;
 
     float normInd = ind / maxInd;
@@ -36,7 +38,7 @@ void main() {
     if (xyz < 1.0 - EPSILON) {
         pos = (radius * cos(angle) + 1.0) * 0.5;
     } else if (xyz < 2.0 - EPSILON) {
-        pos = 0.0;
+        pos = mod(mirrorInd, Y_MOD) / Y_MOD;
     } else {
         pos = (radius * sin(angle) + 1.0) * 0.5;
     }
