@@ -7,7 +7,6 @@ uniform float dpr;
 uniform sampler2D positions;
 
 varying vec3 color;
-varying vec3 position;
 
 const float PX_PER_POS = 3.0;
 
@@ -40,7 +39,7 @@ void main() {
     vec4 xPixel = texture2D(positions, indToCoord(ind * PX_PER_POS));
     vec4 yPixel = texture2D(positions, indToCoord(ind * PX_PER_POS + 1.0));
     vec4 zPixel = texture2D(positions, indToCoord(ind * PX_PER_POS + 2.0));
-    position = vec3(
+    vec3 position = vec3(
         decodeFloat(xPixel),
         decodeFloat(yPixel) * 6.0 - 5.5,
         decodeFloat(zPixel)
