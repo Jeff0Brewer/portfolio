@@ -2,8 +2,8 @@ attribute float vertexInd;
 
 uniform mat4 view;
 uniform mat4 proj;
+uniform vec2 windowSize;
 uniform float texSize;
-uniform float dpr;
 uniform sampler2D positions;
 
 varying vec3 color;
@@ -41,7 +41,7 @@ void main() {
     vec4 zPixel = texture2D(positions, indToCoord(ind * PX_PER_POS + 2.0));
     vec3 position = vec3(
         decodeFloat(xPixel),
-        pow(decodeFloat(yPixel), 0.3) * 3.0 - 2.5,
+        pow(decodeFloat(yPixel), 0.3) * 3.0 - 2.4,
         decodeFloat(zPixel)
     );
     gl_Position = proj * view * vec4(position, 1.0);
@@ -49,5 +49,5 @@ void main() {
     float normInd = vertexInd / (texSize * texSize / 3.0);
     color = colorMap(normInd);
 
-    gl_PointSize = 1.5 * dpr / gl_Position.w;
+    gl_PointSize = 0.0015 * windowSize.y / gl_Position.w;
 }

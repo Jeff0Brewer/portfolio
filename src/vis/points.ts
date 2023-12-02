@@ -11,6 +11,7 @@ class PointRenderer {
     bindInds: () => void
     setProj: (m: mat4) => void
     setView: (m: mat4) => void
+    setWindowDims: (w: number, h: number) => void
     numPoints: number
 
     constructor (gl: WebGLRenderingContext, textureSize: number) {
@@ -30,13 +31,11 @@ class PointRenderer {
         // store closures to easily set potentially changing uniforms
         const projLoc = gl.getUniformLocation(this.program, 'proj')
         const viewLoc = gl.getUniformLocation(this.program, 'view')
-        this.setProj = (mat: mat4): void => {
-            gl.useProgram(this.program)
-            gl.uniformMatrix4fv(projLoc, false, mat)
-        }
-        this.setView = (mat: mat4): void => {
-            gl.useProgram(this.program)
-            gl.uniformMatrix4fv(viewLoc, false, mat)
+        const windowSizeLoc = gl.getUniformLocation(this.program, 'windowSize')
+        this.setProj = (mat: mat4): void => { gl.uniformMatrix4fv(projLoc, false, mat) }
+        this.setView = (mat: mat4): void => { gl.uniformMatrix4fv(viewLoc, false, mat) }
+        this.setWindowDims = (w: number, h: number): void => {
+            gl.uniform2f(windowSizeLoc, w, h)
         }
 
         // set static uniforms
@@ -45,18 +44,16 @@ class PointRenderer {
 
         const posTextureLoc = gl.getUniformLocation(this.program, 'positions')
         gl.uniform1i(posTextureLoc, 0)
+    }
 
-        const dprLoc = gl.getUniformLocation(this.program, 'dpr')
-        gl.uniform1f(dprLoc, window.devicePixelRatio)
+    bindProgram (gl: WebGLRenderingContext): void {
+        gl.useProgram(this.program)
     }
 
     draw (
         gl: WebGLRenderingContext,
-        positions: WebGLTexture,
-        width: number,
-        height: number
+        positions: WebGLTexture
     ): void {
-        gl.viewport(0, 0, width, height)
         gl.bindFramebuffer(gl.FRAMEBUFFER, null)
         gl.useProgram(this.program)
         gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT)

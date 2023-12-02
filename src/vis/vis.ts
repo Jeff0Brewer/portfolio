@@ -10,16 +10,19 @@ const NEAR = 0.01
 const FAR = 100
 
 class VisRenderer {
+    width: number
+    height: number
     gl: WebGLRenderingContext
     positions: [TexAttribRenderer, TexAttribRenderer]
     currPosRenderer: number
     points: PointRenderer
     view: mat4
     proj: mat4
-    width: number
-    height: number
 
     constructor (canvas: HTMLCanvasElement, textureSize: number) {
+        this.width = canvas.width
+        this.height = canvas.height
+
         checkTextureSize(textureSize)
         this.gl = initGl(canvas)
         this.gl.enable(this.gl.DEPTH_TEST)
@@ -41,11 +44,10 @@ class VisRenderer {
         this.proj = mat4.perspective(mat4.create(), FOV, aspect, NEAR, FAR)
         this.view = mat4.lookAt(mat4.create(), [0, 1, 0], [0, 0, 0], [0, 0, 1])
 
-        this.points.setProj(this.proj)
+        this.points.bindProgram(this.gl)
         this.points.setView(this.view)
-
-        this.width = canvas.width
-        this.height = canvas.height
+        this.points.setProj(this.proj)
+        this.points.setWindowDims(this.width, this.height)
     }
 
     draw (): void {
@@ -58,7 +60,8 @@ class VisRenderer {
         // position texture from previous renderer
         this.currPosRenderer = (this.currPosRenderer + 1) % 2
 
-        this.points.draw(this.gl, currPosTexture, this.width, this.height)
+        this.gl.viewport(0, 0, this.width, this.height)
+        this.points.draw(this.gl, currPosTexture)
     }
 
     resize (width: number, height: number): void {
@@ -68,7 +71,9 @@ class VisRenderer {
         const aspect = width / height
         this.proj = mat4.perspective(mat4.create(), FOV, aspect, NEAR, FAR)
 
+        this.points.bindProgram(this.gl)
         this.points.setProj(this.proj)
+        this.points.setWindowDims(this.width, this.height)
     }
 }
 
