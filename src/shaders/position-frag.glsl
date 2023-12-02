@@ -51,7 +51,7 @@ void main() {
     } else if (modInd < 1.0 + EPSILON) {
         float sclWarp = 0.2;
         float scl = (normInd * sclWarp + (1.0 - sclWarp)) * 50.0;
-        float movement = elapsed * 0.05 * (1.1 + sin(pow(lastPos, 2.0) * scl));
+        float movement = elapsed * 0.1 * (1.1 + sin(pow(lastPos, 2.0) * scl));
         float pos = mod(lastPos + movement, 1.0);
         gl_FragColor = encodeFloat(pos);
     } else {
