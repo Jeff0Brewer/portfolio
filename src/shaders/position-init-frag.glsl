@@ -23,10 +23,10 @@ void main() {
     float ind = coord.x + coord.y * texSize;
     float maxInd = texSize * texSize / 3.0;
 
-    float noise = sin(ind * 0.01) + sin(ind * 0.001);
+    float noise = sin(ind * 0.00015) + sin(ind * 0.0001);
     float angle =
         ind / maxInd * NUM_ROTATE * PI * 2.0 +
-        noise * 0.2 -
+        noise * 2.5 -
         PI * 0.5;
 
     float normInd = ind / maxInd;

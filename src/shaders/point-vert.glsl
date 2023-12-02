@@ -41,7 +41,7 @@ void main() {
     vec4 zPixel = texture2D(positions, indToCoord(ind * PX_PER_POS + 2.0));
     vec3 position = vec3(
         decodeFloat(xPixel),
-        decodeFloat(yPixel) * 6.0 - 5.5,
+        pow(decodeFloat(yPixel), 0.3) * 3.0 - 2.5,
         decodeFloat(zPixel)
     );
     gl_Position = proj * view * vec4(position, 1.0);
