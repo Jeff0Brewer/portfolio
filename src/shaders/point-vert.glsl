@@ -49,5 +49,5 @@ void main() {
     float normInd = vertexInd / (texSize * texSize / 3.0);
     color = colorMap(normInd);
 
-    gl_PointSize = 2.0 * dpr / gl_Position.w;
+    gl_PointSize = 1.5 * dpr / gl_Position.w;
 }
