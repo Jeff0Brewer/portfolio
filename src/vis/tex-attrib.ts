@@ -15,6 +15,7 @@ class TextureAttribRenderer {
     texture: WebGLTexture
     texAttachments: Array<number>
     bindPosition: () => void
+    setElapsed: (t: number) => void
     textureSize: number
     numVertex: number
 
@@ -47,6 +48,9 @@ class TextureAttribRenderer {
             const texLoc = gl.getUniformLocation(this.program, `tex${i}`)
             gl.uniform1i(texLoc, i)
         }
+
+        const elapsedLoc = gl.getUniformLocation(this.program, 'elapsed')
+        this.setElapsed = (t: number): void => { gl.uniform1f(elapsedLoc, t) }
     }
 
     initTexture (gl: WebGLRenderingContext, fragSource: string): void {
@@ -64,7 +68,11 @@ class TextureAttribRenderer {
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.numVertex)
     }
 
-    draw (gl: WebGLRenderingContext, sourceTextures: Array<WebGLTexture>): void {
+    draw (
+        gl: WebGLRenderingContext,
+        elapsed: number,
+        sourceTextures: Array<WebGLTexture>
+    ): void {
         gl.viewport(0, 0, this.textureSize, this.textureSize)
         gl.useProgram(this.program)
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer)
@@ -76,6 +84,7 @@ class TextureAttribRenderer {
         }
         gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer)
         this.bindPosition()
+        this.setElapsed(elapsed)
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.numVertex)
     }

@@ -12,6 +12,7 @@ const FAR = 100
 class VisRenderer {
     width: number
     height: number
+    lastTime: number
     gl: WebGLRenderingContext
     positions: [TexAttribRenderer, TexAttribRenderer]
     currPosRenderer: number
@@ -22,6 +23,7 @@ class VisRenderer {
     constructor (canvas: HTMLCanvasElement, textureSize: number) {
         this.width = canvas.width
         this.height = canvas.height
+        this.lastTime = 0
 
         checkTextureSize(textureSize)
         this.gl = initGl(canvas)
@@ -51,9 +53,12 @@ class VisRenderer {
     }
 
     draw (time: number): void {
+        const elapsed = Math.min(time - this.lastTime, 0.2) // bound elapsed to 200ms
+        this.lastTime = time
+
         const lastPosTexture = this.positions[(this.currPosRenderer + 1) % 2].texture
 
-        this.positions[this.currPosRenderer].draw(this.gl, [lastPosTexture])
+        this.positions[this.currPosRenderer].draw(this.gl, elapsed, [lastPosTexture])
         const currPosTexture = this.positions[this.currPosRenderer].texture
 
         // toggle between position rederers on each draw to access last

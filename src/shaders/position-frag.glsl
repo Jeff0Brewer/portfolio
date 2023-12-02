@@ -2,7 +2,7 @@ precision highp float;
 
 uniform float texSize;
 uniform sampler2D tex0;
-uniform float elapsedTime;
+uniform float elapsed;
 
 const float EPSILON = 0.01;
 
@@ -51,7 +51,8 @@ void main() {
     } else if (modInd < 1.0 + EPSILON) {
         float sclWarp = 0.2;
         float scl = (normInd * sclWarp + (1.0 - sclWarp)) * 50.0;
-        float pos = mod(lastPos + 0.001 * sin(pow(lastPos, 2.0) * scl) + 0.0011, 1.0);
+        float movement = elapsed * 0.05 * (1.1 + sin(pow(lastPos, 2.0) * scl));
+        float pos = mod(lastPos + movement, 1.0);
         gl_FragColor = encodeFloat(pos);
     } else {
         gl_FragColor = encodeFloat(lastPos);
