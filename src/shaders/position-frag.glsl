@@ -1,7 +1,8 @@
 precision highp float;
 
 uniform float texSize;
-uniform sampler2D positions;
+uniform sampler2D tex0;
+uniform float elapsedTime;
 
 const float EPSILON = 0.01;
 
@@ -42,7 +43,7 @@ void main() {
     float normInd = 3.0 * ind / (texSize * texSize);
 
     vec2 lastPosCoord = indToCoord(ind);
-    vec4 lastPosEncoded = texture2D(positions, lastPosCoord);
+    vec4 lastPosEncoded = texture2D(tex0, lastPosCoord);
     float lastPos = decodeFloat(lastPosEncoded);
 
     if (modInd < EPSILON) {
