@@ -50,7 +50,7 @@ class VisRenderer {
         this.points.setWindowDims(this.width, this.height)
     }
 
-    draw (): void {
+    draw (time: number): void {
         const lastPosTexture = this.positions[(this.currPosRenderer + 1) % 2].texture
 
         this.positions[this.currPosRenderer].draw(this.gl, [lastPosTexture])
@@ -61,7 +61,7 @@ class VisRenderer {
         this.currPosRenderer = (this.currPosRenderer + 1) % 2
 
         this.gl.viewport(0, 0, this.width, this.height)
-        this.points.draw(this.gl, currPosTexture)
+        this.points.draw(this.gl, time, currPosTexture)
     }
 
     resize (width: number, height: number): void {

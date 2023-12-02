@@ -11,6 +11,7 @@ class PointRenderer {
     bindInds: () => void
     setProj: (m: mat4) => void
     setView: (m: mat4) => void
+    setTime: (t: number) => void
     setWindowDims: (w: number, h: number) => void
     numPoints: number
 
@@ -31,9 +32,11 @@ class PointRenderer {
         // store closures to easily set potentially changing uniforms
         const projLoc = gl.getUniformLocation(this.program, 'proj')
         const viewLoc = gl.getUniformLocation(this.program, 'view')
+        const timeLoc = gl.getUniformLocation(this.program, 'currTime')
         const windowSizeLoc = gl.getUniformLocation(this.program, 'windowSize')
         this.setProj = (mat: mat4): void => { gl.uniformMatrix4fv(projLoc, false, mat) }
         this.setView = (mat: mat4): void => { gl.uniformMatrix4fv(viewLoc, false, mat) }
+        this.setTime = (time: number): void => { gl.uniform1f(timeLoc, time) }
         this.setWindowDims = (w: number, h: number): void => {
             gl.uniform2f(windowSizeLoc, w, h)
         }
@@ -52,17 +55,21 @@ class PointRenderer {
 
     draw (
         gl: WebGLRenderingContext,
+        time: number,
         positions: WebGLTexture
     ): void {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-        gl.useProgram(this.program)
         gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT)
+
+        gl.useProgram(this.program)
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer)
+        this.bindInds()
 
         gl.activeTexture(gl.TEXTURE0)
         gl.bindTexture(gl.TEXTURE_2D, positions)
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer)
-        this.bindInds()
+        this.setTime(time)
 
         gl.drawArrays(gl.POINTS, 0, this.numPoints)
     }

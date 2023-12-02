@@ -42,10 +42,10 @@ const Vis: FC = () => {
     }, [width, height])
 
     useEffect(() => {
-        const tick = (): void => {
+        const tick = (time: number): void => {
             if (!visRef.current) { return }
 
-            visRef.current.draw()
+            visRef.current.draw(time * 0.001)
             frameIdRef.current = window.requestAnimationFrame(tick)
         }
         frameIdRef.current = window.requestAnimationFrame(tick)

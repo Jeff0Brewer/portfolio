@@ -4,6 +4,7 @@ uniform mat4 view;
 uniform mat4 proj;
 uniform vec2 windowSize;
 uniform float texSize;
+uniform float currTime;
 uniform sampler2D positions;
 
 varying vec3 color;
@@ -27,7 +28,11 @@ vec2 indToCoord (float ind) {
 }
 
 vec3 colorMap(float x) {
-    return normalize(vec3(mod(x, 0.1) * 10.0, mod(x, 0.01) * 100.0, mod(x, 0.001) * 1000.0));
+    return normalize(vec3(
+        mod(x, 0.01) * 100.0,
+        mod(x, 0.001) * 1000.0,
+        mod(x, 0.1) * 10.0
+    ));
 }
 
 float shadeMap(float x) {
@@ -47,7 +52,7 @@ void main() {
     gl_Position = proj * view * vec4(position, 1.0);
 
     float normInd = vertexInd / (texSize * texSize / 3.0);
-    color = colorMap(normInd);
+    color = colorMap(normInd - currTime * 0.0002);
 
     gl_PointSize = 0.0015 * windowSize.y / gl_Position.w;
 }
