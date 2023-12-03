@@ -28,7 +28,7 @@ vec2 indToCoord (float ind) {
 }
 
 vec3 colorMap(float x) {
-    return normalize(vec3(
+    return 1.3 * normalize(vec3(
         mod(x, 0.01) * 100.0,
         mod(x, 0.001) * 1000.0,
         mod(x, 0.1) * 10.0

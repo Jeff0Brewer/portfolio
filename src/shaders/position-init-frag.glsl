@@ -5,7 +5,7 @@ uniform float texSize;
 const float PI = 3.14159;
 const float EPSILON = 0.01;
 
-const float NUM_ROTATE = 8.0;
+const float NUM_ROTATE = 8.1327;
 const float Y_MOD = 0.003;
 
 // encodes float values in range (0, 1) to rgba bytes
